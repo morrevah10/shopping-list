@@ -12,11 +12,9 @@
       <tr *ngFor="let product of products">
         <td>{{ product.name }}</td>
         <td>{{ product.amount }}</td>
-        <td>{{ product.dateAdded | date }}</td>
+        <td>{{ product.dateAdded | date: 'dd/MM/yyyy' }}</td>
         <td><button (click)="removeProduct(product.id)" class="btn-remove">מחק</button></td>
       </tr>
     </tbody>
   </table>
 </div>
-
-  
