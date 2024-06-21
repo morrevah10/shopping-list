@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Output, EventEmitter } from '@angular/core';
 import { ProductService } from '../../services/product.service';
 import { Product } from '../../modules/product.model';
 
@@ -11,6 +11,8 @@ export class ProductFormComponent {
   productName: string = '';
   productAmount: number = 0;
 
+  @Output() productAdded = new EventEmitter<Product>();
+
   constructor(private productService: ProductService) { }
 
   addProduct(): void {
@@ -21,8 +23,12 @@ export class ProductFormComponent {
       dateAdded: new Date()
     };
 
-    this.productService.addProduct(newProduct);
-    this.productName = '';
-    this.productAmount = 0;
+    this.productService.addProduct(newProduct).subscribe((product) => {
+      this.productAdded.emit(product);
+      this.productName = '';
+      this.productAmount = 0;
+    }, error => {
+      console.error('Error adding product:', error);
+    });
   }
 }

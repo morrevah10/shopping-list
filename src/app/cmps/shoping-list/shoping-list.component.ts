@@ -8,16 +8,27 @@ import { Product } from '../../modules/product.model';
   styleUrls: ['./shoping-list.component.scss']
 })
 export class ShoppingListComponent implements OnInit {
-  products!: Product[];
+  products: Product[] = [];
 
-  constructor(private productService: ProductService) { }
+  constructor(private productService: ProductService) {}
 
   ngOnInit(): void {
-    this.products = this.productService.getProducts();
+    this.loadProducts();
+  }
+
+  loadProducts(): void {
+    this.productService.getProducts().subscribe(products => {
+      this.products = products;
+    });
+  }
+
+  onProductAdded(product: Product): void {
+    this.products.push(product);
   }
 
   removeProduct(id: number): void {
-    this.productService.removeProduct(id);
-    this.products = this.productService.getProducts();
+    this.productService.removeProduct(id).subscribe(() => {
+      this.products = this.products.filter(product => product.id !== id);
+    });
   }
 }
