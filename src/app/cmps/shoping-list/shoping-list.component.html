@@ -1,0 +1,22 @@
+<div class="table-container">
+  <table class="shopping-table">
+    <thead>
+      <tr>
+        <th>מוצר</th>
+        <th>כמות</th>
+        <th>תאריך הוספה</th>
+        <th>פעולות</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let product of products">
+        <td>{{ product.name }}</td>
+        <td>{{ product.amount }}</td>
+        <td>{{ product.dateAdded | date }}</td>
+        <td><button (click)="removeProduct(product.id)" class="btn-remove">מחק</button></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+  

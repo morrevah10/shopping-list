@@ -1,0 +1,47 @@
+
+  
+  .app-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+  }
+  
+  .header {
+    width: 100%;
+    font-family: Arial, sans-serif;
+    background-color: #007bff;
+    color: white;
+    padding: 15px 0;
+    text-align: center;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    h3,h2{
+      margin: 0px;
+    }
+  }
+  
+  .main {
+    width: 100%;
+    font-family: Arial, sans-serif;
+    max-width: 800px;
+    background-color: white;
+    padding: 20px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+  }
+  
+  .footer {
+    width: 100%;
+    font-family: Arial, sans-serif;
+    text-align: center;
+    padding: 10px 0;
+    background-color: #007bff;
+    color: white;
+    margin-top: 20px;
+    position: fixed;
+    bottom: 0;
+    border-radius: 10px;
+  }
+  
