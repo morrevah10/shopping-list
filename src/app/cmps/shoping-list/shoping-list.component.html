@@ -6,6 +6,8 @@
         <th>מוצר</th>
         <th>כמות</th>
         <th>תאריך הוספה</th>
+        <th>הערות</th>
+        <th>סימן</th>
         <th>פעולות</th>
       </tr>
     </thead>
@@ -14,7 +16,13 @@
         <td>{{ product.name }}</td>
         <td>{{ product.amount }}</td>
         <td>{{ product.dateAdded | date: 'dd/MM/yyyy' }}</td>
-        <td><button (click)="removeProduct(product.id)" class="btn-remove">מחק</button></td>
+        <td>{{ product.comments }}</td>
+        <td>
+          <button (click)="toggleProductMarked(product)">Mark/Unmark</button>
+        </td>
+        <td>
+          <button (click)="removeProduct(product.id)" class="btn-remove">מחק</button>
+        </td>
       </tr>
     </tbody>
   </table>

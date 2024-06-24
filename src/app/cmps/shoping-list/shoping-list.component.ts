@@ -31,4 +31,9 @@ export class ShoppingListComponent implements OnInit {
       this.products = this.products.filter(product => product.id !== id);
     });
   }
+
+  toggleProductMarked(product: Product): void {
+    product.marked = !product.marked;
+    this.productService.updateProduct(product.id, { marked: product.marked }).subscribe();
+  }
 }

@@ -10,6 +10,7 @@ import { Product } from '../../modules/product.model';
 export class ProductFormComponent {
   productName: string = '';
   productAmount: number = 0;
+  productComments: string = '';
 
   @Output() productAdded = new EventEmitter<Product>();
 
@@ -20,13 +21,16 @@ export class ProductFormComponent {
       id: Date.now(),
       name: this.productName,
       amount: this.productAmount,
-      dateAdded: new Date()
+      dateAdded: new Date(),
+      comments: this.productComments,
+      marked: false
     };
 
     this.productService.addProduct(newProduct).subscribe((product) => {
       this.productAdded.emit(product);
       this.productName = '';
       this.productAmount = 0;
+      this.productComments = '';
     }, error => {
       console.error('Error adding product:', error);
     });

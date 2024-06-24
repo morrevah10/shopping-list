@@ -50,8 +50,6 @@
 //   }
 // }
 
-
-
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Product } from '../modules/product.model';
@@ -61,7 +59,9 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class ProductService {
-  private apiUrl = 'https://shopinglist-backend.onrender.com'; 
+  private apiUrl = 'https://shopinglist-backend.onrender.com';
+  // private apiUrl = 'http://localhost:3000/products';
+
 
   constructor(private http: HttpClient) {}
 
@@ -75,5 +75,9 @@ export class ProductService {
 
   removeProduct(id: number): Observable<{ success: boolean }> {
     return this.http.delete<{ success: boolean }>(`${this.apiUrl}/products/${id}`);
+  }
+
+  updateProduct(id: number, updateData: Partial<Product>): Observable<Product> {
+    return this.http.put<Product>(`${this.apiUrl}/products/${id}`, updateData);
   }
 }
