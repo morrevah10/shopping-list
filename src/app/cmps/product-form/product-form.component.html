@@ -15,6 +15,13 @@
       <input id="comments" [(ngModel)]="productComments" name="productComments">
     </div>
 
+    <div class="form-group">
+      <label for="category">קטגוריה :</label>
+      <select id="category" [(ngModel)]="productCategory" name="productCategory" required>
+        <option *ngFor="let category of categories" [value]="category">{{category}}</option>
+      </select>
+    </div>
+
     <button type="submit" class="btn-submit">הוסף לרשימה</button>
   </form>
 </div>

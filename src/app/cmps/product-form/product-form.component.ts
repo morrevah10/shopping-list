@@ -11,6 +11,8 @@ export class ProductFormComponent {
   productName: string = '';
   productAmount: number = 0;
   productComments: string = '';
+  productCategory: string = '';  
+  categories: string[] = ['יבשים', 'ניקיון', 'ירקות', 'פירות','חלבי','כללי','בשרי','טבעוני','גאנק','שתייה']; 
 
   @Output() productAdded = new EventEmitter<Product>();
 
@@ -23,6 +25,7 @@ export class ProductFormComponent {
       amount: this.productAmount,
       dateAdded: new Date(),
       comments: this.productComments,
+      category: this.productCategory,  
       marked: false
     };
 
@@ -31,6 +34,7 @@ export class ProductFormComponent {
       this.productName = '';
       this.productAmount = 0;
       this.productComments = '';
+      this.productCategory = '';
     }, error => {
       console.error('Error adding product:', error);
     });

@@ -3,27 +3,43 @@
   <table class="shopping-table">
     <thead>
       <tr>
+        <th></th>
         <th>מוצר</th>
         <th>כמות</th>
-        <th>תאריך הוספה</th>
+        <th>תאריך</th>
+        <th>קטגוריה</th>
         <th>הערות</th>
-        <th>סימן</th>
         <th>פעולות</th>
       </tr>
     </thead>
     <tbody>
       <tr *ngFor="let product of products">
-        <td>{{ product.name }}</td>
-        <td>{{ product.amount }}</td>
-        <td>{{ product.dateAdded | date: 'dd/MM/yyyy' }}</td>
-        <td>{{ product.comments }}</td>
         <td>
-          <button (click)="toggleProductMarked(product)">Mark/Unmark</button>
+          <input type="checkbox" [checked]="product.marked" (change)="toggleProductMarked(product)">
         </td>
+        <td [class.marked]="product.marked" [class.has-image]="product.hasImage" (click)="product.hasImage && openModal(product)" style="cursor: pointer;">
+          {{ product.name }}
+        </td>
+        <td>{{ product.amount }}</td>
+        <td>{{ product.dateAdded | date: 'MM/dd' }}</td>
+        <td>{{ product.category }}</td> 
         <td>
+          <input type="text" [(ngModel)]="product.comments" (ngModelChange)="onCommentChange(product)" [class.changed]="product.changed">
+        </td>
+        <td class="action-buttons">
           <button (click)="removeProduct(product.id)" class="btn-remove">מחק</button>
+          <button (click)="updateProduct(product)" [disabled]="!product.changed" class="btn-update">עדכן</button>
+          <input type="file" #fileInput style="display:none" (change)="onFileSelected($event, product)">
+          <button (click)="triggerFileInput()" class="btn-upload">תמונה</button>
         </td>
       </tr>
     </tbody>
   </table>
+</div>
+
+<div *ngIf="isModalOpen" class="modal">
+  <div class="modal-content">
+    <span class="close" (click)="closeModal()">&times;</span>
+    <img *ngIf="selectedProduct?.image" [src]="getImageUrl(selectedProduct?.id)" alt="Product Image">
+  </div>
 </div>

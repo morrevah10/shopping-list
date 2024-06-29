@@ -3,7 +3,10 @@ export interface Product {
   name: string;
   amount: number;
   dateAdded: Date;
-  marked?: boolean;
-  comments?: string;
-  imageUrl?: string;
+  marked: boolean;
+  comments: string;
+  category: string;   
+  image?: string;
+  changed?: boolean; 
+  hasImage?: boolean; 
 }
