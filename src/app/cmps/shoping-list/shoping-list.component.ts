@@ -3,7 +3,7 @@ import { ProductService } from '../../services/product.service';
 import { Product } from '../../modules/product.model';
 
 @Component({
-  selector: 'app-shopping-list',
+  selector: 'app-shoping-list',
   templateUrl: './shoping-list.component.html',
   styleUrls: ['./shoping-list.component.scss']
 })
@@ -11,6 +11,7 @@ export class ShoppingListComponent implements OnInit {
   products: Product[] = [];
   isModalOpen: boolean = false;
   selectedProduct: Product | null = null;
+  loadingProductIds: Set<string> = new Set();
 
   @ViewChild('fileInput') fileInput!: ElementRef;
 
@@ -30,18 +31,30 @@ export class ShoppingListComponent implements OnInit {
     this.products.push({ ...product, changed: false, hasImage: !!product.image });
   }
 
-  removeProduct(id: number): void {
-    this.productService.removeProduct(id).subscribe(() => {
-      this.products = this.products.filter(product => product.id !== id);
-    });
+  removeProduct(id: string | undefined): void {
+    if (id) {
+      this.loadingProductIds.add(id);
+      this.productService.removeProduct(id).subscribe(() => {
+        this.products = this.products.filter(product => product._id !== id);
+        this.loadingProductIds.delete(id);
+      }, error => {
+        console.error('Error removing product:', error);
+        this.loadingProductIds.delete(id);
+      });
+    }
   }
 
   toggleProductMarked(product: Product): void {
-    this.productService.toggleMarked(product.id).subscribe(updatedProduct => {
-      product.marked = updatedProduct.marked;
-    }, error => {
-      console.error('Error toggling product marked status:', error);
-    });
+    if (product._id) {
+      this.loadingProductIds.add(product._id);
+      this.productService.toggleMarked(product._id).subscribe(updatedProduct => {
+        product.marked = updatedProduct.marked;
+        this.loadingProductIds.delete(product._id!);
+      }, error => {
+        console.error('Error toggling product marked status:', error);
+        this.loadingProductIds.delete(product._id!);
+      });
+    }
   }
 
   onCommentChange(product: Product): void {
@@ -49,15 +62,22 @@ export class ShoppingListComponent implements OnInit {
   }
 
   updateProduct(product: Product): void {
-    this.productService.updateProduct(product.id, { comments: product.comments }).subscribe(
-      updatedProduct => {
-        product.comments = updatedProduct.comments;
-        product.changed = false;
-      },
-      error => {
-        console.error('Error updating product comments:', error);
-      }
-    );
+    if (product._id) {
+      this.loadingProductIds.add(product._id);
+      this.productService.updateProduct(product._id, { comments: product.comments }).subscribe(
+        updatedProduct => {
+          const index = this.products.findIndex(p => p._id === product._id);
+          if (index !== -1) {
+            this.products[index] = { ...this.products[index], ...updatedProduct, changed: false };
+          }
+          this.loadingProductIds.delete(product._id!);
+        },
+        error => {
+          console.error('Error updating product comments:', error);
+          this.loadingProductIds.delete(product._id!);
+        }
+      );
+    }
   }
 
   triggerFileInput(): void {
@@ -66,14 +86,26 @@ export class ShoppingListComponent implements OnInit {
 
   onFileSelected(event: any, product: Product): void {
     const file: File = event.target.files[0];
-    if (file) {
-      this.productService.uploadImage(product.id, file).subscribe(updatedProduct => {
-        product.image = updatedProduct.image;
-        product.hasImage = !!updatedProduct.image;
-        console.log('Image uploaded:', updatedProduct);
-      }, error => {
-        console.error('Error uploading image:', error);
-      });
+    if (file && product._id) {
+      this.loadingProductIds.add(product._id);
+      this.productService.uploadImage(product._id, file).subscribe(
+        updatedProduct => {
+          const index = this.products.findIndex(p => p._id === product._id);
+          if (index !== -1) {
+            this.products[index] = { 
+              ...this.products[index], 
+              ...updatedProduct, 
+              hasImage: true,
+              imageUrl: `${updatedProduct.imageUrl}?t=${new Date().getTime()}`
+            };
+          }
+          this.loadingProductIds.delete(product._id!);
+        },
+        error => {
+          console.error('Error uploading image:', error);
+          this.loadingProductIds.delete(product._id!);
+        }
+      );
     }
   }
 
@@ -87,7 +119,7 @@ export class ShoppingListComponent implements OnInit {
     this.selectedProduct = null;
   }
 
-  getImageUrl(productId: number | undefined): string {
-    return productId ? `http://localhost:3000/products/${productId}/image` : '';
+  getImageUrl(productId: string | undefined): string {
+    return this.productService.getImageUrl(productId);
   }
 }
