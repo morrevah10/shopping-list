@@ -3,6 +3,8 @@
   justify-content: center;
   margin-top: 20px;
   direction: rtl;
+  padding: 0 10px;
+  box-sizing: border-box;
 }
 
 .product-form {
@@ -10,7 +12,8 @@
   padding: 20px;
   border-radius: 5px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  width: 300px;
+  width: 100%;
+  max-width: 300px;
 }
 
 .form-group {
@@ -24,11 +27,11 @@
 
 .form-group input,
 .form-group select {
-  width: 100%; /* Make sure the width takes the full width of the parent */
+  width: 100%;
   padding: 10px;
   border: 1px solid #ccc;
   border-radius: 3px;
-  box-sizing: border-box; /* Include padding and border in the element's total width and height */
+  box-sizing: border-box;
 }
 
 .btn-submit {
@@ -38,9 +41,21 @@
   padding: 10px;
   border-radius: 3px;
   cursor: pointer;
-  width: 100%; /* Make the button take the full width */
+  width: 100%;
 }
 
 .btn-submit:hover {
   background-color: #0056b3;
+}
+
+@media (max-width: 600px) {
+  .product-form {
+    padding: 10px;
+  }
+
+  .form-group input,
+  .form-group select,
+  .btn-submit {
+    padding: 8px;
+  }
 }

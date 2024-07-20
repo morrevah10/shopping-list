@@ -1,19 +1,21 @@
 .table-container {
-  display: flex;
-  justify-content: center;
+  width: 100%;
+  overflow-x: auto;
   margin-top: 20px;
   direction: rtl;
-  padding: 0 10px; /* Add padding to the sides */
-  box-sizing: border-box; /* Ensure padding is included in the total width */
+  padding: 0 10px;
+  box-sizing: border-box;
+}
+
+.table-wrapper {
+  min-width: 600px;
 }
 
 .shopping-table {
-  width: 90%; /* Set the table width to 90% of the container */
-  max-width: 1200px; /* Optionally, set a maximum width */
+  width: 100%;
   border-collapse: collapse;
-  margin: 25px 0;
-  font-size: 18px;
-  text-align: center; /* Center text in table */
+  font-size: 16px;
+  text-align: center;
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
 }
 
@@ -25,8 +27,7 @@
 .shopping-table th,
 .shopping-table td {
   padding: 6px 8px;
-  text-align: center; /* Center text in table cells */
-  white-space: nowrap; /* Prevent text wrapping */
+  text-align: center;
 }
 
 .shopping-table tbody tr {
@@ -44,40 +45,26 @@
 .btn-remove,
 .btn-update,
 .btn-upload {
-  background-color: #007bff;
   color: white;
   border: none;
   padding: 5px 10px;
   border-radius: 3px;
   cursor: pointer;
-  width: 100%; /* Ensure buttons are the same size */
+  font-size: 14px;
 }
 
 .btn-remove {
   background-color: #dc3545;
 }
 
-.btn-remove:hover {
-  background-color: #c82333;
-}
-
 .btn-update {
   background-color: #28a745;
-}
-
-.btn-update:hover {
-  background-color: #218838;
 }
 
 .btn-upload {
   background-color: #007bff;
 }
 
-.btn-upload:hover {
-  background-color: #0056b3;
-}
-
-/* Modal styling */
 .modal {
   display: flex;
   position: fixed;
@@ -106,12 +93,6 @@
   float: right;
   font-size: 28px;
   font-weight: bold;
-}
-
-.close:hover,
-.close:focus {
-  color: black;
-  text-decoration: none;
   cursor: pointer;
 }
 
@@ -129,11 +110,24 @@
 
 .action-buttons {
   display: flex;
-  gap: 10px;
+  flex-wrap: wrap;
+  gap: 5px;
 }
 
-.action-buttons button {
-  flex: 1;
-  padding: 5px;
-  margin: 0;
+@media (max-width: 768px) {
+  .shopping-table {
+    font-size: 14px;
+  }
+
+  .shopping-table th,
+  .shopping-table td {
+    padding: 4px 6px;
+  }
+
+  .btn-remove,
+  .btn-update,
+  .btn-upload {
+    padding: 4px 8px;
+    font-size: 12px;
+  }
 }
