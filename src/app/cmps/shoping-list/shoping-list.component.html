@@ -1,44 +1,83 @@
 <app-product-form (productAdded)="onProductAdded($event)"></app-product-form>
 
 <div class="table-container">
-  <div class="table-wrapper">
-    <table class="shopping-table">
-      <thead>
-        <tr>
-          <th></th>
-          <th>מוצר</th>
-          <th>כמות</th>
-          <th>תאריך</th>
-          <th>קטגוריה</th>
-          <th>הערות</th>
-          <th>פעולות</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let product of products">
-          <td>
+  <!-- Compact table for screens under 600px -->
+  <table class="shopping-table compact-table">
+    <thead>
+      <tr>
+        <th></th>
+        <th>מוצר</th>
+        <th>תאריך</th>
+        <th>קטגוריה</th>
+      </tr>
+    </thead>
+    <tbody>
+      <ng-container *ngFor="let product of products">
+        <tr class="product-row">
+          <td class="checkbox-cell">
             <input type="checkbox" [checked]="product.marked" (change)="toggleProductMarked(product)" [disabled]="loadingProductIds.has(product._id!)">
           </td>
-          <td [class.marked]="product.marked" [class.has-image]="product.hasImage" (click)="product.hasImage && openModal(product)" [style.cursor]="product.hasImage ? 'pointer' : 'default'">
+          <td class="product-name" [class.marked]="product.marked" [class.has-image]="product.hasImage" (click)="product.hasImage && openModal(product)" [style.cursor]="product.hasImage ? 'pointer' : 'default'">
             {{ product.name }}
           </td>
-          <td>{{ product.amount }}</td>
-          <td>{{ product.dateAdded | date: 'MM/dd' }}</td>
-          <td>{{ product.category }}</td> 
-          <td>
-            <input type="text" [(ngModel)]="product.comments" (ngModelChange)="onCommentChange(product)" [class.changed]="product.changed">
-          </td>
-          <td class="action-buttons">
-            <button [disabled]="loadingProductIds.has(product._id!)" (click)="removeProduct(product._id)" class="btn-remove">מחק</button>
-            <button [disabled]="!product.changed || loadingProductIds.has(product._id!)" (click)="updateProduct(product)" class="btn-update">עדכן</button>
-            <input type="file" #fileInput style="display:none" (change)="onFileSelected($event, product)">
-            <button [disabled]="loadingProductIds.has(product._id!)" (click)="fileInput.click()" class="btn-upload">תמונה</button>
-            <span *ngIf="loadingProductIds.has(product._id!)">Loading...</span>
+          <td class="product-date">{{ product.dateAdded | date: 'MM/dd' }}</td>
+          <td class="product-category">{{ product.category }}</td>
+        </tr>
+        <tr class="product-details">
+          <td colspan="4">
+            <div class="details-container">
+              <div class="comments-cell">
+                <input type="text" [(ngModel)]="product.comments" (ngModelChange)="onCommentChange(product)" [class.changed]="product.changed" placeholder="הערות">
+              </div>
+              <div class="action-buttons">
+                <button [disabled]="loadingProductIds.has(product._id!)" (click)="removeProduct(product._id)" class="btn-remove">מחק</button>
+                <button [disabled]="!product.changed || loadingProductIds.has(product._id!)" (click)="updateProduct(product)" class="btn-update">עדכן</button>
+                <input type="file" #fileInput style="display:none" (change)="onFileSelected($event, product)">
+                <button [disabled]="loadingProductIds.has(product._id!)" (click)="fileInput.click()" class="btn-upload">תמונה</button>
+                <span *ngIf="loadingProductIds.has(product._id!)">Loading...</span>
+              </div>
+            </div>
           </td>
         </tr>
-      </tbody>
-    </table>
-  </div>
+      </ng-container>
+    </tbody>
+  </table>
+
+  <!-- Full table for screens 600px and wider -->
+  <table class="shopping-table full-table">
+    <thead>
+      <tr>
+        <th></th>
+        <th>מוצר</th>
+        <th>תאריך</th>
+        <th>קטגוריה</th>
+        <th>הערות</th>
+        <th>פעולות</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let product of products" class="product-row">
+        <td class="checkbox-cell">
+          <input type="checkbox" [checked]="product.marked" (change)="toggleProductMarked(product)" [disabled]="loadingProductIds.has(product._id!)">
+        </td>
+        <td class="product-name" [class.marked]="product.marked" [class.has-image]="product.hasImage" (click)="product.hasImage && openModal(product)" [style.cursor]="product.hasImage ? 'pointer' : 'default'">
+          {{ product.name }}
+        </td>
+        <td class="product-date">{{ product.dateAdded | date: 'MM/dd' }}</td>
+        <td class="product-category">{{ product.category }}</td>
+        <td class="comments-cell">
+          <input type="text" [(ngModel)]="product.comments" (ngModelChange)="onCommentChange(product)" [class.changed]="product.changed" placeholder="הערות">
+        </td>
+        <td class="action-buttons">
+          <button [disabled]="loadingProductIds.has(product._id!)" (click)="removeProduct(product._id)" class="btn-remove">מחק</button>
+          <button [disabled]="!product.changed || loadingProductIds.has(product._id!)" (click)="updateProduct(product)" class="btn-update">עדכן</button>
+          <input type="file" #fileInput style="display:none" (change)="onFileSelected($event, product)">
+          <button [disabled]="loadingProductIds.has(product._id!)" (click)="fileInput.click()" class="btn-upload">תמונה</button>
+          <span *ngIf="loadingProductIds.has(product._id!)">Loading...</span>
+        </td>
+      </tr>
+    </tbody>
+  </table>
 </div>
 
 <div *ngIf="isModalOpen" class="modal">
