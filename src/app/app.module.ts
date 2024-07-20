@@ -13,12 +13,15 @@ import { AppComponent } from './root/app.component';
 import { ShoppingListComponent } from './cmps/shoping-list/shoping-list.component';
 import { ProductFormComponent } from './cmps/product-form/product-form.component';
 
+import { ImageUrlPipe } from './pipes/image-url.pipe';
+
 
 @NgModule({
   declarations: [
     AppComponent,
     ShoppingListComponent,
     ProductFormComponent,
+    ImageUrlPipe,
   ],
   imports: [
     BrowserModule,

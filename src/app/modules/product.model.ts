@@ -1,12 +1,13 @@
 export interface Product {
-  id: number;
+  _id?: string;
   name: string;
   amount: number;
   dateAdded: Date;
   marked: boolean;
   comments: string;
-  category: string;   
+  category: string;
   image?: string;
-  changed?: boolean; 
-  hasImage?: boolean; 
+  imageUrl?: string;
+  changed?: boolean;
+  hasImage?: boolean;
 }

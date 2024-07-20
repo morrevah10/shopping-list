@@ -1,4 +1,5 @@
 <app-product-form (productAdded)="onProductAdded($event)"></app-product-form>
+
 <div class="table-container">
   <table class="shopping-table">
     <thead>
@@ -15,9 +16,9 @@
     <tbody>
       <tr *ngFor="let product of products">
         <td>
-          <input type="checkbox" [checked]="product.marked" (change)="toggleProductMarked(product)">
+          <input type="checkbox" [checked]="product.marked" (change)="toggleProductMarked(product)" [disabled]="loadingProductIds.has(product._id!)">
         </td>
-        <td [class.marked]="product.marked" [class.has-image]="product.hasImage" (click)="product.hasImage && openModal(product)" style="cursor: pointer;">
+        <td [class.marked]="product.marked" [class.has-image]="product.hasImage" (click)="product.hasImage && openModal(product)" [style.cursor]="product.hasImage ? 'pointer' : 'default'">
           {{ product.name }}
         </td>
         <td>{{ product.amount }}</td>
@@ -27,10 +28,11 @@
           <input type="text" [(ngModel)]="product.comments" (ngModelChange)="onCommentChange(product)" [class.changed]="product.changed">
         </td>
         <td class="action-buttons">
-          <button (click)="removeProduct(product.id)" class="btn-remove">מחק</button>
-          <button (click)="updateProduct(product)" [disabled]="!product.changed" class="btn-update">עדכן</button>
+          <button [disabled]="loadingProductIds.has(product._id!)" (click)="removeProduct(product._id)" class="btn-remove">מחק</button>
+          <button [disabled]="!product.changed || loadingProductIds.has(product._id!)" (click)="updateProduct(product)" class="btn-update">עדכן</button>
           <input type="file" #fileInput style="display:none" (change)="onFileSelected($event, product)">
-          <button (click)="triggerFileInput()" class="btn-upload">תמונה</button>
+          <button [disabled]="loadingProductIds.has(product._id!)" (click)="fileInput.click()" class="btn-upload">תמונה</button>
+          <span *ngIf="loadingProductIds.has(product._id!)">Loading...</span>
         </td>
       </tr>
     </tbody>
@@ -40,6 +42,6 @@
 <div *ngIf="isModalOpen" class="modal">
   <div class="modal-content">
     <span class="close" (click)="closeModal()">&times;</span>
-    <img *ngIf="selectedProduct?.image" [src]="getImageUrl(selectedProduct?.id)" alt="Product Image">
+    <img *ngIf="selectedProduct?.image" [src]="selectedProduct?._id | imageUrl" alt="Product Image">
   </div>
 </div>
