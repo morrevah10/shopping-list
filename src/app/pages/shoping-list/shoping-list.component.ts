@@ -32,10 +32,12 @@ export class ShoppingListComponent implements OnInit {
   }
 
   removeProduct(id: string | undefined): void {
+    console.log('Attempting to delete product:', id);
     if (id) {
       this.loadingProductIds.add(id);
       this.productService.removeProduct(id).subscribe(() => {
         this.products = this.products.filter(product => product._id !== id);
+        console.log('Delete successful:', this.products);
         this.loadingProductIds.delete(id);
       }, error => {
         console.error('Error removing product:', error);
@@ -43,6 +45,8 @@ export class ShoppingListComponent implements OnInit {
       });
     }
   }
+
+
 
   toggleProductMarked(product: Product): void {
     if (product._id) {

@@ -28,11 +28,12 @@ export class ProductService {
   private handleError(error: HttpErrorResponse) {
     let errorMessage = 'An unknown error occurred!';
     if (error.error instanceof ErrorEvent) {
-      // Client-side or network error
-      errorMessage = `Error: ${error.error.message}`;
+      errorMessage = `Client-side error: ${error.error.message}`;
     } else {
-      // Backend returned an unsuccessful response code
-      errorMessage = `Error Code: ${error.status}\nMessage: ${error.message}`;
+      errorMessage = `Server-side error: ${error.status} ${error.statusText}\nMessage: ${error.message}`;
+      if (error.error) {
+        errorMessage += `\nServer response: ${JSON.stringify(error.error)}`;
+      }
     }
     console.error(errorMessage);
     return throwError(errorMessage);

@@ -10,10 +10,13 @@ import { HttpClientModule } from '@angular/common/http';
 
 
 import { AppComponent } from './root/app.component';
-import { ShoppingListComponent } from './cmps/shoping-list/shoping-list.component';
+import { ShoppingListComponent } from './pages/shoping-list/shoping-list.component';
 import { ProductFormComponent } from './cmps/product-form/product-form.component';
 
 import { ImageUrlPipe } from './pipes/image-url.pipe';
+import { HomeComponent } from './pages/home/home.component';
+import { TodoListComponent } from './pages/todo-list/todo-list.component';
+import { DateListComponent } from './pages/date-list/date-list.component';
 
 
 @NgModule({
@@ -22,6 +25,10 @@ import { ImageUrlPipe } from './pipes/image-url.pipe';
     ShoppingListComponent,
     ProductFormComponent,
     ImageUrlPipe,
+    HomeComponent,
+    TodoListComponent,
+    DateListComponent
+
   ],
   imports: [
     BrowserModule,
